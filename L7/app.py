@@ -74,7 +74,34 @@ def listar_usuarios():
         return render_template('usuarios.html', usuarios=user_adm)
     elif funcao == 'USER':
         return render_template('usuarios.html', usuarios=user_usuario)
- 
+        
+ """
+      # ... (código anterior)
+
+def filtrar_usuarios(usuarios, query):
+    return [usuario for usuario in usuarios if query.lower() in usuario['nome'].lower() or query.lower() in usuario['username'].lower()]
+
+@app.route('/usuarios')
+def listar_usuarios():
+    if 'username' not in session:
+        return redirect(url_for('login'))
+
+    username = session['username']
+    for usuario in usuarios_registrados:
+        if usuario['username'] == username:
+            funcao = usuario['funcao']
+            break
+
+    query = request.args.get('query', '')
+    usuarios_filtrados = filtrar_usuarios(usuarios_registrados, query)
+
+    if funcao == 'ADM':
+        return render_template('usuarios.html', usuarios=usuarios_filtrados)
+    elif funcao == 'USER':
+        # Filtrar apenas os usuários comuns
+        usuarios_filtrados = [usuario for usuario in usuarios_filtrados if usuario['funcao'] == 'USER']
+        return render_template('usuarios.html', usuarios=usuarios_filtrados)
+ """
 
 @app.route('/dashboard')
 def dashboard():
